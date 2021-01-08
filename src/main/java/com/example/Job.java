@@ -1,32 +1,35 @@
 package com.example;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.lang.String;
+import java.net.URL;
 import java.lang.Integer;
 
 public class Job {
     public static void main(String[] args) throws IOException {
+        String inputFileUrl = args[0];
+        String outputFilePath = args[1];
+        int fraction = Integer.parseInt(args[2]);
+        int totalFractions = Integer.parseInt(args[3]);
         Job j = new Job();
-        String outputFilePath = j.start(args[0]);
-        System.out.println(outputFilePath);
+        j.start(inputFileUrl, outputFilePath, fraction, totalFractions);
     }
 
-    public String start(String inputFilePath) throws IOException {
-        ArrayList<String[]> content = readTextFile(inputFilePath);
+    public void start(String inputFileURL, String outputFilePath, int fration, int totalFractions) throws IOException {
+        ArrayList<String[]> content = readTextFile(inputFileURL);
         HashMap<String, Integer> wordCounts = countWords(content);
-        String outputFilePath = generateOutputFilePathFromInputFilePath(inputFilePath);
         writeMapInCSV(wordCounts, outputFilePath);
-        return outputFilePath;
     }
 
-    private ArrayList<String[]> readTextFile(String inputFilePath) throws IOException {
-        BufferedReader csvReader = new BufferedReader(new FileReader(inputFilePath));
+    private ArrayList<String[]> readTextFile(String inputFileURL) throws IOException {
+        URL url = new URL(inputFileURL);
+        BufferedReader csvReader = new BufferedReader(new InputStreamReader(url.openStream()));
         String row;
         ArrayList<String[]> content = new ArrayList<String[]>();
         while ((row = csvReader.readLine()) != null)
@@ -58,16 +61,5 @@ public class Job {
         }
         csvWriter.flush();
         csvWriter.close();
-    }
-
-    private String generateOutputFilePathFromInputFilePath(String inputFilePath) {
-        String[] arr = inputFilePath.split("/");
-        arr[arr.length - 1] += "_output";
-        StringBuilder builder = new StringBuilder();
-        for (String s : arr) {
-            builder.append(s);
-            builder.append("/");
-        }
-        return builder.toString();
     }
 }
