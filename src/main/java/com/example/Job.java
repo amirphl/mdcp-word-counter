@@ -18,7 +18,10 @@ public class Job {
         int fraction = Integer.parseInt(args[2]);
         int totalFractions = Integer.parseInt(args[3]);
         Job j = new Job();
+        long s = System.currentTimeMillis();
         j.start(inputFileUrl, outputFilePath, fraction, totalFractions);
+        long e = System.currentTimeMillis();
+        System.out.println(e - s + " miliiseconds");
     }
 
     public void start(String inputFileURL, String outputFilePath, int fration, int totalFractions) throws IOException {
@@ -33,7 +36,7 @@ public class Job {
         String row;
         ArrayList<String[]> content = new ArrayList<String[]>();
         while ((row = csvReader.readLine()) != null)
-            content.add(row.split(","));
+            content.add(row.split(" "));
         csvReader.close();
         return content;
     }
@@ -41,11 +44,15 @@ public class Job {
     private HashMap<String, Integer> countWords(ArrayList<String[]> content) {
         HashMap<String, Integer> wordCounts = new HashMap<String, Integer>();
         for (String[] row : content)
-            for (String word : row)
+            for (String w : row) {
+                String word = w.trim();
+                if (word.equals(""))
+                    continue;
                 if (wordCounts.containsKey(word))
                     wordCounts.put(word, wordCounts.get(word) + 1);
                 else
                     wordCounts.put(word, 1);
+            }
         return wordCounts;
     }
 
@@ -55,7 +62,7 @@ public class Job {
             String key = entry.getKey();
             Integer value = entry.getValue();
             csvWriter.append(key);
-            csvWriter.append(",");
+            csvWriter.append("#");
             csvWriter.append(String.valueOf(value));
             csvWriter.append("\n");
         }
