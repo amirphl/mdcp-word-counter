@@ -2,10 +2,11 @@
 
 ### how to build jar and dex
 - `javac src/main/java/com/example/Job.java -d build/`
+- `mkdir -p target/`
 - `jar cvf target/mdcp-word-counter.jar build/`
-- `/usr/lib/android-sdk/build-tools/30.0.3/d8 target/classes/com/example/Job.class --release --output dex.jar --lib /usr/lib/android-sdk/platforms/android-30/android.jar --classpath target/dependency/*`
+- `/usr/lib/android-sdk/build-tools/30.0.3/d8 build/com/example/Job.class --release --output target/mdcp-word-counter.dex.jar --lib /usr/lib/android-sdk/platforms/android-30/android.jar --classpath target/dependency/*`
 or  
-- `/usr/lib/android-sdk/build-tools/30.0.3/d8 --release --output dex.jar target/mdcp-word-counter.jar`
+- `/usr/lib/android-sdk/build-tools/30.0.3/d8 --release --output target/mdcp-word-counter.dex.jar target/mdcp-word-counter.jar`
 
 ### program arguments
 - arg 0: input file URL ---> the url of a text file
