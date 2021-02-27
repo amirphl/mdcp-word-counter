@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class Merger {
 
-    public static final String OUTPUT_PATH = "finalFreqDoc.txt";
+    public static String OUTPUT_PATH;
     public static final String SPLITTER = "#";
 
     public static void write(HashMap<String, Integer> data) throws IOException {
@@ -77,10 +77,10 @@ public class Merger {
             return;
         }
 
-        File[] freqDocFiles = new File[args.length];
+        OUTPUT_PATH = args[args.length - 1];
+        File[] freqDocFiles = new File[args.length - 1];
         for (int i = 0; i < freqDocFiles.length; i++)
             freqDocFiles[i] = new File(args[i]);
-
         // File[] freqDocFiles = new File("xx").listFiles();
 
         ArrayList<HashMap<String, Integer>> freqDocs = readFreqDocs(freqDocFiles);
@@ -90,3 +90,4 @@ public class Merger {
         System.out.println("took " + (e - s) + " milliseconds");
     }
 }
+
